@@ -22,12 +22,12 @@ These scripts require the use of FindIT Network Manager release 2.0 or higher.
     ```
 
 * Dependency Installation (you may need to use `pip3` on Linux or Mac)
-(Create requirements.txt file)
+
     ```bash
     pip install -r requirements.txt
     ```
 
-* Edit environment.py to specify the details of your FindIT Network Manager instance
+* Copy `environment.template.py` to `environment.py` and edit to specify the details of your FindIT Network Manager instance
 
 ## Usage
 
@@ -65,10 +65,6 @@ $
 ```
 
 ## Getting help
-
-Instruct users how to get help with this code; this might include links to an issue tracker, wiki, mailing list, etc.
-
-**Example**
 
 More information about the FindIT Network Manager API may be found at (devnet URL) or by browsing to https://your_manager_address/api/.  You may contact Cisco Developer Support (url) for assistance with the use of the API.
 
