@@ -4,7 +4,7 @@ This project contains sample scripts demonstrating usage of the FindIT Network M
 
 The concepts and techniques shown can be extended to enable programmatic access to allow visibility and management of Cisco 100 to 500 Series network devices through FindIT Network Manager.  The sample scripts included are simple and intended to demonstrate the capabilities and use of the API.  They should not be used for production purposes without significant modifications.
 
-(ToDo) Also included is a Postman collection covering the requests used in the sample.
+Also included is a Postman collection and environment covering the requests used in the sample.
 
 These scripts require the use of FindIT Network Manager release 2.0 or higher.
 

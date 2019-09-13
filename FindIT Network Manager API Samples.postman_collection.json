@@ -1,0 +1,694 @@
+{
+	"info": {
+		"_postman_id": "892efa95-c914-44b4-b81a-ae9aeb961ab8",
+		"name": "FindIT Network Manager API Samples",
+		"description": "Sample requests demonstrating the use of the Cisco FindIT Network Manager API.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Generate JWT using the RSA-Sign Crypto Library",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "83edd258-91eb-4954-8022-d13776d20e15",
+						"exec": [
+							"// Derived from https://github.com/ktukker/adobe.io-jwt-postman",
+							"",
+							"postman.setGlobalVariable(\"jsrsasign-js\", responseBody);",
+							"",
+							"// Tips from: https://github.com/kjur/jsrsasign/issues/199",
+							"// https://github.com/kjur/jsrsasign/wiki/Tutorial-for-JWT-generation",
+							"",
+							"var navigator = {}; //fake a navigator object for the lib",
+							"var window = {}; //fake a window object for the lib",
+							"eval(postman.getGlobalVariable(\"jsrsasign-js\")); //import javascript jsrsasign",
+							"",
+							"",
+							"var header = {",
+							"    \"alg\": \"HS256\",",
+							"    \"typ\": \"JWT\",",
+							"    \"kid\": postman.getEnvironmentVariable(\"keyid\")",
+							"};",
+							"",
+							"var data = {",
+							"    \"iss\": \"postman.example.com\",",
+							"    \"cid\": \"8b77a3ac-7e84-49da-923b-365d753646bb\",",
+							"    \"appver\": \"1.0\",",
+							"    \"aud\": \"findit.cisco.com\",",
+							"    \"iat\": Math.round(Date.now()/1000),",
+							"    \"exp\": Math.round(3600 + Date.now()/1000)",
+							"};",
+							"",
+							"var secret = postman.getEnvironmentVariable(\"keysecret\");",
+							"",
+							"var sHeader = JSON.stringify(header);",
+							"var sPayload = JSON.stringify(data);",
+							"var sJWT = KJUR.jws.JWS.sign(\"HS256\", sHeader, sPayload, secret);",
+							"",
+							"console.log(sPayload);",
+							"console.log(sJWT);",
+							"",
+							"postman.setEnvironmentVariable(\"jwt_token\", sJWT);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://kjur.github.io/jsrsasign/jsrsasign-latest-all-min.js",
+					"protocol": "http",
+					"host": [
+						"kjur",
+						"github",
+						"io"
+					],
+					"path": [
+						"jsrsasign",
+						"jsrsasign-latest-all-min.js"
+					]
+				},
+				"description": "Load the RSA-Sign Crypto LIbrary in a global environment variable.  Calculate a JWT using environment parameters and store the result in an environment variable.\n\nSource: http://kjur.github.io/jsrsasign/jsrsasign-latest-all-min.js\n\nGithub: https://github.com/kjur/jsrsasign\n\nThis approach is derived from the methods described in https://medium.com/adobetech/using-postman-for-jwt-authentication-on-adobe-i-o-7573428ffe7f."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Organizations",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{Manager Address}}/api/v2/networks",
+					"protocol": "https",
+					"host": [
+						"{{Manager Address}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"networks"
+					]
+				},
+				"description": "Returns a JSON list of all organizations defined on the target system."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Networks",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "378d9283-24c3-407b-9a21-2d26f1d640f4",
+						"exec": [
+							"// Check to see if orgid is defined in the environment, and if present, add",
+							"// the x-ctx-org-id header to restrict the results to only that organization.",
+							"if (pm.environment.get(\"orgid\") !== \"\") {",
+							"  pm.request.headers.add({",
+							"    'key': 'x-ctx-org-id',",
+							"    'value': pm.environment.get(\"orgid\")",
+							"  });",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{Manager Address}}/api/v2/networks",
+					"protocol": "https",
+					"host": [
+						"{{Manager Address}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"networks"
+					]
+				},
+				"description": "Returns a JSON list of all networks defined on the target system.  If an organization ID is defined in the environment, then restrict the results."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Networks Filtered",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "378d9283-24c3-407b-9a21-2d26f1d640f4",
+						"exec": [
+							"// Check to see if orgid is defined in the environment, and if present, add",
+							"// the x-ctx-org-id header to restrict the results to only that organization.",
+							"if (pm.environment.get(\"orgid\") !== \"\") {",
+							"  pm.request.headers.add({",
+							"    'key': 'x-ctx-org-id',",
+							"    'value': pm.environment.get(\"orgid\")",
+							"  });",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{Manager Address}}/api/v2/networks?search=search string here&fields=name,network-id",
+					"protocol": "https",
+					"host": [
+						"{{Manager Address}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"networks"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "search string here",
+							"description": "Networks returned will contain this string"
+						},
+						{
+							"key": "fields",
+							"value": "name,network-id",
+							"description": "Only return the network name and ID fields"
+						}
+					]
+				},
+				"description": "Returns a JSON list of all networks defined on the target system that match the specified search string.  The search string should be set as a query parameter.  If an organization ID is defined in the environment, then restrict the results to only that organization."
+			},
+			"response": []
+		},
+		{
+			"name": "Add Network",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "378d9283-24c3-407b-9a21-2d26f1d640f4",
+						"exec": [
+							"// Check to see if orgid is defined in the environment, and if not, throw an error",
+							"if (pm.environment.get(\"orgid\") === \"\") {",
+							"    throw new Error('An organization ID must be specified in the orgid environment variable.')",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\":\"Insert Network Name\",\n  \"org-id\":\"{{orgid}}\",\n  \"description\":\"Insert Network Description\"\n}"
+				},
+				"url": {
+					"raw": "https://{{Manager Address}}/api/v2/networks",
+					"protocol": "https",
+					"host": [
+						"{{Manager Address}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"networks"
+					]
+				},
+				"description": "Add a new network with details as specified in the payload.  Before sending this request, the payload should be updated with details appropriate for the environment.  Network will be added to the organization corresponding to the orgid set in the environment."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Devices Filtered",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "378d9283-24c3-407b-9a21-2d26f1d640f4",
+						"exec": [
+							"// Check to see if orgid is defined in the environment, and if present, add",
+							"// the x-ctx-org-id header to restrict the results to only that organization.",
+							"if (pm.environment.get(\"orgid\") !== \"\") {",
+							"  pm.request.headers.add({",
+							"    'key': 'x-ctx-org-id',",
+							"    'value': pm.environment.get(\"orgid\")",
+							"  });",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{Manager Address}}/api/v2/nodes?search-str=search string here&fields=/system-state/hostname,/system-state/type,/system-state/ip,/system-state/sn&type=Device",
+					"protocol": "https",
+					"host": [
+						"{{Manager Address}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"nodes"
+					],
+					"query": [
+						{
+							"key": "search-str",
+							"value": "search string here",
+							"description": "Networks returned will contain this string"
+						},
+						{
+							"key": "fields",
+							"value": "/system-state/hostname,/system-state/type,/system-state/ip,/system-state/sn",
+							"description": "Note: some additional fields such as network and organization will always be returned"
+						},
+						{
+							"key": "type",
+							"value": "Device",
+							"description": "Allowed values: All, Device, Others, Router, Switch, WAP, IpPhone, IpCamera, NAS, VirtualDevice, or WLC.  May be specified multiple times."
+						}
+					]
+				},
+				"description": "Returns a JSON list of all devices defined on the target system that match the specified search string and type(s).  The search string and type values should be set as query parameters.  If an organization ID is defined in the environment, then restrict the results to only that organization."
+			},
+			"response": []
+		},
+		{
+			"name": "Backup Device Config",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-XSRF-TOKEN",
+						"type": "text",
+						"value": "{{xsrf-token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"comment\": \"Configuration backup using API call by Postman\",\n    \"node-ids\": [\n        \"{{deviceid}}\"\n    ]\n}"
+				},
+				"url": {
+					"raw": "https://{{Manager Address}}/api/v2/nodes/operations/backup-config",
+					"protocol": "https",
+					"host": [
+						"{{Manager Address}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"nodes",
+						"operations",
+						"backup-config"
+					]
+				},
+				"description": "Create a backup configuration job for a device.  The ID of the device to back up will be taken from the deviceid environment variable, or you can update the body directly to contain a list of one or more device IDs as string values.  The body also contains a comment that will be attached to the backup."
+			},
+			"response": []
+		},
+		{
+			"name": "Reboot Device",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "X-XSRF-TOKEN",
+						"type": "text",
+						"value": "{{xsrf-token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"node-ids\": [\n        \"{{deviceid}}\"\n    ]\n}"
+				},
+				"url": {
+					"raw": "https://{{Manager Address}}/api/v2/nodes/operations/reboot",
+					"protocol": "https",
+					"host": [
+						"{{Manager Address}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"nodes",
+						"operations",
+						"reboot"
+					]
+				},
+				"description": "Create a reboot job for a device.  The ID of the device to reboot will be taken from the deviceid environment variable, or you can update the body directly to contain a list of one or more device IDs as string values."
+			},
+			"response": []
+		},
+		{
+			"name": "X-launch Device GUI",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "378d9283-24c3-407b-9a21-2d26f1d640f4",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{Manager Address}}/controller/xl/{{deviceid}}?token={{jwt_token}}",
+					"protocol": "https",
+					"host": [
+						"{{Manager Address}}"
+					],
+					"path": [
+						"controller",
+						"xl",
+						"{{deviceid}}"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "{{jwt_token}}"
+						}
+					]
+				},
+				"description": "Sets up a x-launch session for the specified device.  The ID of the device is taken from the deviceid environment variable.  The x-launch session is only available from the IP address that initiates the request.\n\nNote: The behaviour of this request varies depending on the Postman setting 'Automatically follow redirects'.  If the setting is enabled (default), the response body will contain the page returned by the target device when the root URL is requested.  If the setting is disabled, then the response is a 302 Found with the URL of the next page to be requested in the Location header."
+			},
+			"response": []
+		},
+		{
+			"name": "Get PnP Image Files",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "378d9283-24c3-407b-9a21-2d26f1d640f4",
+						"exec": [
+							"// Check to see if orgid is defined in the environment, and if present, add",
+							"// the x-ctx-org-id header to restrict the results to only that organization.",
+							"if (pm.environment.get(\"orgid\") !== \"\") {",
+							"  pm.request.headers.add({",
+							"    'key': 'x-ctx-org-id',",
+							"    'value': pm.environment.get(\"orgid\")",
+							"  });",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{Manager Address}}/api/v2/pnp/images",
+					"protocol": "https",
+					"host": [
+						"{{Manager Address}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"pnp",
+						"images"
+					]
+				},
+				"description": "Returns a JSON list of all PnP image files on the target system.  If an organization ID is defined in the environment, then restrict the results."
+			},
+			"response": []
+		},
+		{
+			"name": "Get PnP Config Files",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "378d9283-24c3-407b-9a21-2d26f1d640f4",
+						"exec": [
+							"// Check to see if orgid is defined in the environment, and if present, add",
+							"// the x-ctx-org-id header to restrict the results to only that organization.",
+							"if (pm.environment.get(\"orgid\") !== \"\") {",
+							"  pm.request.headers.add({",
+							"    'key': 'x-ctx-org-id',",
+							"    'value': pm.environment.get(\"orgid\")",
+							"  });",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{Manager Address}}/api/v2/pnp/configs",
+					"protocol": "https",
+					"host": [
+						"{{Manager Address}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"pnp",
+						"configs"
+					]
+				},
+				"description": "Returns a JSON list of all PnP config files on the target system.  If an organization ID is defined in the environment, then restrict the results."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Device Groups",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "378d9283-24c3-407b-9a21-2d26f1d640f4",
+						"exec": [
+							"// Check to see if orgid is defined in the environment, and if present, add",
+							"// the x-ctx-org-id header to restrict the results to only that organization.",
+							"if (pm.environment.get(\"orgid\") !== \"\") {",
+							"  pm.request.headers.add({",
+							"    'key': 'x-ctx-org-id',",
+							"    'value': pm.environment.get(\"orgid\")",
+							"  });",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{Manager Address}}/api/v2/groups",
+					"protocol": "https",
+					"host": [
+						"{{Manager Address}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"groups"
+					]
+				},
+				"description": "Returns a JSON list of all device groups defined on the target system.  If an organization ID is defined in the environment, then restrict the results."
+			},
+			"response": []
+		},
+		{
+			"name": "Add PnP Device",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "378d9283-24c3-407b-9a21-2d26f1d640f4",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"device-name\":\"Device_Hostname\",\n  \"node-type\":\"Allowed values: Router, Switch, WAP\",\n  \"pid\":\"Product ID - e.g. SG350-10P\",\n  \"sn\":\"Serial Number - 11 alphanumeric characters\",\n  \"group-id\":\"ID of device group\",\n  \"network-id\":\"ID of network\",\n  \"image-id\":\"ID of PnP image file.  May be blank.\",\n  \"config-id\":\"ID of PnP config file.  May be blank.\"\n}"
+				},
+				"url": {
+					"raw": "https://{{Manager Address}}/api/v2/pnp/devices",
+					"protocol": "https",
+					"host": [
+						"{{Manager Address}}"
+					],
+					"path": [
+						"api",
+						"v2",
+						"pnp",
+						"devices"
+					]
+				},
+				"description": "Add a new PnP device with details as specified in the payload.  Before sending this request, the payload should be updated with details appropriate for the device to be created."
+			},
+			"response": []
+		}
+	]
+}
