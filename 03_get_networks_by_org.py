@@ -57,7 +57,7 @@ try:
   response=requests.get('https://%s:%s/api/v2/networks' % 
                        (environment.manager, environment.port),
                        headers={'Authorization':"Bearer %s" % token,
-                                'x-stx-org-id':args.orgid },
+                                'x-ctx-org-id':args.orgid },
                        verify=environment.verify_mgr_cert)
 
 except requests.exceptions.RequestException as e:
