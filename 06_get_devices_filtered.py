@@ -66,7 +66,7 @@ token = finditauth.getToken(keyid=environment.keyid,
                             clientid=environment.clientid,
                             appname=environment.appname)
 
-# Build the API request URL.  The getNodes API path is /api/v2/networks
+# Build the API request URL.  The getNodes API path is /api/v2/nodes
 url = 'https://%s:%s/api/v2/nodes' % (environment.manager, environment.port)
 
 # Specify the fields to be returned as query parameters
