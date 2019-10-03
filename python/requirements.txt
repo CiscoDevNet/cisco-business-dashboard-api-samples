@@ -1,3 +1,6 @@
 PyJWT
 requests
+
+# There is a bug in sseclient 0.0.23 and 0.0.24 that fails to process
+# events with large payloads.  So avoid these two versions.
 sseclient!=0.0.23,!=0.0.24
