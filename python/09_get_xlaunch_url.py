@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Retrieve a URL to access a device GUI via FindIT Network Manager.
+"""Retrieve a URL to access a device GUI via Cisco Business Dashboard.
 
 Retrieve a URL to access the specified device's administration GUI through
-an instance of Cisco FindIT Network Manager & Probe.  The device ID to be
-accessed is passed as a command line option.  The details of the Manager are
+an instance of Cisco Business Dashboard & Probe.  The device ID to be
+accessed is passed as a command line option.  The details of the Dashboard are
 contained in the environment.py file.
 
 Note that URL provided may only be accessed from the same IP address that
@@ -36,7 +36,7 @@ import requests
 import argparse
 
 import environment
-import finditauth
+import cbdauth
 
 # Get the device nodeId from command line arguments
 parser = argparse.ArgumentParser(description='Retrieve a xlaunch URL for the '
@@ -51,17 +51,17 @@ if (args.device is None):
 
 else:
   # Create a properly formatted JWT using environment data
-  token = finditauth.getToken(keyid=environment.keyid,
-                              secret=environment.secret,
-                              clientid=environment.clientid,
-                              appname=environment.appname)
+  token = cbdauth.getToken(keyid=environment.keyid,
+                           secret=environment.secret,
+                           clientid=environment.clientid,
+                           appname=environment.appname)
 
   # Build the API request.  The xlaunch URL request uses a very different
   # path to the other API operations: /controller/xl/{nodeId}?token=SIGNED_JWT
   r = requests.get('https://%s:%s/controller/xl/%s?token=%s' % 
-                             (environment.manager, environment.port,
+                             (environment.dashboard, environment.port,
                              args.device,token), allow_redirects=False,
-                             verify=environment.verify_mgr_cert)
+                             verify=environment.verify_cbd_cert)
   print(vars(r.request))
   if r.status_code == 302:                           
     print(r.headers['Location'])

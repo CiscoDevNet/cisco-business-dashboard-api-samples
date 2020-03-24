@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Retrieve a filtered list of networks from Cisco FindIT Network Manager.
+"""Retrieve a filtered list of networks from Cisco Business Dashboard.
 
-Query the Cisco FindIT Network Manager API for a list of networks that match
+Query the Cisco Business Dashboard API for a list of networks that match
 the supplied search string.  Only the network name and ID are returned.  The
-details of the Manager to query are contained in the environment.py file.
+details of the Dashboard to query are contained in the environment.py file.
 
 Command line arguments:
   -h, --help            show this help message and exit
@@ -34,7 +34,7 @@ import json
 import argparse
 
 import environment
-import finditauth
+import cbdauth
 
 # Get details of network(s) to display from command line arguments
 #
@@ -48,13 +48,13 @@ parser.add_argument('-s','--search',default=None,help='Display only networks '
 args = parser.parse_args()
 
 # Create a properly formatted JWT using environment data
-token = finditauth.getToken(keyid=environment.keyid,
-                            secret=environment.secret,
-                            clientid=environment.clientid,
-                            appname=environment.appname)
+token = cbdauth.getToken(keyid=environment.keyid,
+                    	 secret=environment.secret,
+                         clientid=environment.clientid,
+                         appname=environment.appname)
 
 # Build the API request URL.  The getNetworks API path is /api/v2/networks
-url = 'https://%s:%s/api/v2/networks' % (environment.manager, environment.port)
+url = 'https://%s:%s/api/v2/networks' % (environment.dashboard, environment.port)
 
 # Specify the fields to be returned as query parameters
 url = url + '?fields=name,network-id'
@@ -66,7 +66,7 @@ if args.search:
 try:
   # Build and send the API request.
   response=requests.get(url,headers={'Authorization':"Bearer %s" % token},
-                        verify=environment.verify_mgr_cert)
+                        verify=environment.verify_cbd_cert)
 
 except requests.exceptions.RequestException as e:
   # Generally this will be a connection error or timeout.  HTTP errors are

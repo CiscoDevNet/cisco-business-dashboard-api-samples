@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Receive a stream of events from Cisco FindIT Network Manager.
+"""Receive a stream of events from Cisco Business Dashboard.
 
-Use the Cisco FindIT Network Manager API to subscribe to the event stream.
+Use the Cisco Business Dashboard API to subscribe to the event stream.
 Display a message for each event as it is received.  The details of the
-Manager to receive events from are contained in the environment.py file.
+Dashboard to receive events from are contained in the environment.py file.
 
 Command line arguments:
   optional arguments:
@@ -37,11 +37,11 @@ import argparse
 import sseclient
 
 import environment
-import finditauth
+import cbdauth
 
 # Simple command line arguments for help and version
 parser = argparse.ArgumentParser(description='Receive an event stream from '
-                                 'FindIT Network Manager.')
+                                 'Cisco Business Dashboard.')
 parser.add_argument('--version', action='version', version='%(prog)s 1.0')
 args = parser.parse_args()
 
@@ -50,22 +50,22 @@ try:
   while True:
     if not token:
       # Create a properly formatted JWT using 
-      token = finditauth.getToken(keyid=environment.keyid,
-                                  secret=environment.secret,
-                                  clientid=environment.clientid,
-                                  appname=environment.appname,
-                                  lifetime=14400)
+      token = cbdauth.getToken(keyid=environment.keyid,
+                               secret=environment.secret,
+                               clientid=environment.clientid,
+                               appname=environment.appname,
+                               lifetime=14400)
 
 
     events = sseclient.SSEClient('https://%s:%s/api/v2/event-source?types=action,config_change,event,state_change&monitored-networks=all' % 
-                               (environment.manager, environment.port),
+                               (environment.dashboard, environment.port),
                                headers={'Authorization':"Bearer %s" % token},
-                               verify=environment.verify_mgr_cert)
+                               verify=environment.verify_cbd_cert)
     try:
       for ev in events:
         event = json.loads(ev.data)
         if event['type'] == '/heart_beat':
-          print("Received heartbeat from Manager.")
+          print("Received heartbeat from Dashboard.")
         else:
           # Use the event content to generate a human readable english string
           print("Received event: ",event['english-string'].format(**event['parameters']))

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Reboot a device configuration using FindIT Network Manager.
+"""Reboot a device configuration using Cisco Business Dashboard.
 
-Trigger a reboot for the specified device(s) using the Cisco FindIT Network
-Manager API.  The device(s) to be rebooted are passed as command line options.
-The details of the Manager are contained in the environment.py file.
+Trigger a reboot for the specified device(s) using the Cisco Business
+Dashboard API.  The device(s) to be rebooted are passed as command line options.
+The details of the Dashboard are contained in the environment.py file.
 
 Note that the reboot action can also be performed on networks, which result in
 all devices in the network being restarted.  Given how disruptive this could
@@ -38,7 +38,7 @@ import json
 import argparse
 
 import environment
-import finditauth
+import cbdauth
 
 # Get details of device(s) to reboot from command line arguments
 parser = argparse.ArgumentParser(description='Perform a reboot operation '
@@ -58,19 +58,19 @@ else:
   action = {'node-ids': args.device}
 
   # Create a properly formatted JWT using environment data
-  token = finditauth.getToken(keyid=environment.keyid,
-                              secret=environment.secret,
-                              clientid=environment.clientid,
-                              appname=environment.appname)
+  token = cbdauth.getToken(keyid=environment.keyid,
+                           secret=environment.secret,
+                           clientid=environment.clientid,
+                           appname=environment.appname)
 
   try:
     # Build and send the API request.  The reboot operation API path is
     # /api/v2/nodes/operations/reboot.  Include the action details dictionary
     # as a JSON payload
     response=requests.post('https://%s:%s/api/v2/nodes/operations/reboot' % 
-                         (environment.manager, environment.port),
+                         (environment.dashboard, environment.port),
                          headers={'Authorization':"Bearer %s" % token},
-                         json=action,verify=environment.verify_mgr_cert)
+                         json=action,verify=environment.verify_cbd_cert)
 
   except requests.exceptions.RequestException as e:
     # Generally this will be a connection error or timeout.  HTTP errors are

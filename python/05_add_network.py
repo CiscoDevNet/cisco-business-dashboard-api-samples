@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Add a new network to Cisco FindIT Network Manager.
+"""Add a new network to Cisco Business Dashboard.
 
-Create a new network record using the Cisco FindIT Network Manager API.
+Create a new network record using the Cisco Business Dashboard API.
 Only the network name and description are set.  The network name and the ID of
-the owning organization must be specified.  The details of the Manager to
+the owning organization must be specified.  The details of the Dashboard to
 update are contained in the environment.py file.
 
 Command line arguments:
@@ -40,7 +40,7 @@ import json
 import argparse
 
 import environment
-import finditauth
+import cbdauth
 
 # Get details of network to create from command line arguments
 #
@@ -66,18 +66,18 @@ if args.description is not None:
   network['description'] = args.description
 
 # Create a properly formatted JWT using environment data
-token = finditauth.getToken(keyid=environment.keyid,
-                            secret=environment.secret,
-                            clientid=environment.clientid,
-                            appname=environment.appname)
+token = cbdauth.getToken(keyid=environment.keyid,
+                         secret=environment.secret,
+                         clientid=environment.clientid,
+                         appname=environment.appname)
 
 try:
   # Build and send the API request.  The createNetworks API path is
   # /api/v2/networks
   response=requests.post('https://%s:%s/api/v2/networks' % 
-                       (environment.manager, environment.port),
+                       (environment.dashboard, environment.port),
                        headers={'Authorization':"Bearer %s" % token},
-                       json=network,verify=environment.verify_mgr_cert)
+                       json=network,verify=environment.verify_cbd_cert)
 
 except requests.exceptions.RequestException as e:
   # Generally this will be a connection error or timeout.  HTTP errors are

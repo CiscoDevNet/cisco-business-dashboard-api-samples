@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Retrieve a list of PnP files from Cisco FindIT Network Manager.
+"""Retrieve a list of PnP files from Cisco Business Dashboard.
 
-Query the Cisco FindIT Network Manager API for a list of configuration and
+Query the Cisco Business Dashboard API for a list of configuration and
 image files available for use with Network Plug and Play.  Two separate API
-calls are performed - one for each file type.  The details of the Manager to
+calls are performed - one for each file type.  The details of the Dashboard to
 query are contained in the environment.py file.
 
 Command line arguments:
@@ -34,11 +34,11 @@ import sys
 import argparse
 
 import environment
-import finditauth
+import cbdauth
 
 def doAPIQuery(url,jwt,v=True):
   """
-  Query the Cisco FindIT Network Manager API using the provided path and token.
+  Query the Cisco Business Dashboard API using the provided path and token.
   Returns a JSON object parsed from the response payload.  Exits in the event
   of an error.
   
@@ -48,8 +48,8 @@ def doAPIQuery(url,jwt,v=True):
   
   Arguments:
     url - The URL to be queried
-    jwt - A properly formatted JWT to use authenticating with the Manager
-    v   - Verify the certificate of the Manager.  Set to False for self-
+    jwt - A properly formatted JWT to use authenticating with the Dashboard
+    v   - Verify the certificate of the Dashboard.  Set to False for self-
           signed certs
   """
   try:
@@ -81,20 +81,20 @@ def doAPIQuery(url,jwt,v=True):
 def main():
   # Simple command line arguments for help and version
   parser = argparse.ArgumentParser(description='Retrieve a list of PnP files '
-                                   'available in FindIT Network Manager.')
+                                   'available in Cisco Business Dashboard.')
   parser.add_argument('--version', action='version', version='%(prog)s 1.0')
   args = parser.parse_args()
 
   # Create a properly formatted JWT using 
-  token = finditauth.getToken(keyid=environment.keyid,
-                              secret=environment.secret,
-                              clientid=environment.clientid,
-                              appname=environment.appname)
+  token = cbdauth.getToken(keyid=environment.keyid,
+                           secret=environment.secret,
+                           clientid=environment.clientid,
+                           appname=environment.appname)
 
   # Get image list
   imagedata = doAPIQuery('https://%s:%s/api/v2/pnp/images' % 
-                         (environment.manager, environment.port),
-                         token, environment.verify_mgr_cert)
+                         (environment.dashboard, environment.port),
+                         token, environment.verify_cbd_cert)
 
   # Iterate through the response and print in a nice-ish table
   print('='*48,'PnP Images','='*49)
@@ -106,8 +106,8 @@ def main():
 
   # Get config list
   configdata = doAPIQuery('https://%s:%s/api/v2/pnp/configs' % 
-                         (environment.manager, environment.port),
-                         token, environment.verify_mgr_cert)
+                         (environment.dashboard, environment.port),
+                         token, environment.verify_cbd_cert)
 
   # Iterate through the response and print in a nice-ish table
   print('='*48,'PnP Configs','='*48)

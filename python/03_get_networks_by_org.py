@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Retrieve networks from FindIT Network Manager belonging to an organization.
+"""Retrieve networks from Cisco Business Dashboard belonging to an organization.
 
-Query the Cisco FindIT Network Manager API for a list of networks that belong
-to the specified organization ID.  The details of the Manager to query are
+Query the Cisco Business Dashboard API for a list of networks that belong
+to the specified organization ID.  The details of the Dashboard to query are
 contained in the environment.py file.
 
 Command line arguments:
@@ -35,7 +35,7 @@ import json
 import argparse
 
 import environment
-import finditauth
+import cbdauth
 
 # Get desired organization ID from command line argument
 parser = argparse.ArgumentParser(description='List all networks belong to the '
@@ -45,20 +45,20 @@ parser.add_argument('orgid',help='The ID of the organization')
 args = parser.parse_args()
 
 # Create a properly formatted JWT using environment data
-token = finditauth.getToken(keyid=environment.keyid,
-                            secret=environment.secret,
-                            clientid=environment.clientid,
-                            appname=environment.appname)
+token = cbdauth.getToken(keyid=environment.keyid,
+                         secret=environment.secret,
+                         clientid=environment.clientid,
+                         appname=environment.appname)
 
 try:
   # Build and send the API request.  The getNetworks API path is
   # /api/v2/networks.  The x-ctx-org-id header is used to restrict the
   # results to the specified org.
   response=requests.get('https://%s:%s/api/v2/networks' % 
-                       (environment.manager, environment.port),
+                       (environment.dashboard, environment.port),
                        headers={'Authorization':"Bearer %s" % token,
                                 'x-ctx-org-id':args.orgid },
-                       verify=environment.verify_mgr_cert)
+                       verify=environment.verify_cbd_cert)
 
 except requests.exceptions.RequestException as e:
   # Generally this will be a connection error or timeout.  HTTP errors are

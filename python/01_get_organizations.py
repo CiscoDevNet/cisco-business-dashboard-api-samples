@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Retrieve a list of organizations from Cisco FindIT Network Manager.
+"""Retrieve a list of organizations from Cisco Business Dashboard.
 
-Query the Cisco FindIT Network Manager API for a list of organizations.  The
-details of the Manager to query are contained in the environment.py file.
+Query the Cisco Business Dashboard API for a list of organizations.  The
+details of the Dashboard to query are contained in the environment.py file.
 
 Command line arguments:
   optional arguments:
@@ -31,27 +31,27 @@ import json
 import argparse
 
 import environment
-import finditauth
+import cbdauth
 
 # Simple command line arguments for help and version
 parser = argparse.ArgumentParser(description='List all organizations defined '
-                                 'in FindIT Network Manager.')
+                                 'in Cisco Business Dashboard.')
 parser.add_argument('--version', action='version', version='%(prog)s 1.0')
 args = parser.parse_args()
 
 # Create a properly formatted JWT using environment data
-token = finditauth.getToken(keyid=environment.keyid,
-                            secret=environment.secret,
-                            clientid=environment.clientid,
-                            appname=environment.appname)
+token = cbdauth.getToken(keyid=environment.keyid,
+                         secret=environment.secret,
+                         clientid=environment.clientid,
+                         appname=environment.appname)
 
 try:
   # Build and send the API request.  The getOrganizations API path is
   # /api/v2/orgs
   response=requests.get('https://%s:%s/api/v2/orgs' % 
-                       (environment.manager, environment.port),
+                       (environment.dashboard, environment.port),
                        headers={'Authorization':"Bearer %s" % token},
-                       verify=environment.verify_mgr_cert)
+                       verify=environment.verify_cbd_cert)
 
 except requests.exceptions.RequestException as e:
   # Generally this will be a connection error or timeout.  HTTP errors are

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Receive a filtered stream of events from Cisco FindIT Network Manager.
+"""Receive a filtered stream of events from Cisco Business Dashboard.
 
-Use the Cisco FindIT Network Manager API to subscribe to the event stream.
+Use the Cisco Business Dashboard API to subscribe to the event stream.
 Display a message for each event as it is received.  The stream may be
 restricted using command line arguments to only events from specific networks
-and events of the specified types.  The details of the Manager to receive
+and events of the specified types.  The details of the Dashboard to receive
 events from are contained in the environment.py file.
 
 Command line arguments:
@@ -45,7 +45,7 @@ import argparse
 import sseclient
 
 import environment
-import finditauth
+import cbdauth
 
 # Get details of event(s) to display from command line arguments
 #
@@ -66,11 +66,11 @@ parser.add_argument('-t','--type',
 args = parser.parse_args()
 
 # Create a properly formatted JWT using environment data
-token = finditauth.getToken(keyid=environment.keyid,
-                            secret=environment.secret,
-                            clientid=environment.clientid,
-                            appname=environment.appname,
-                            lifetime=3600)
+token = cbdauth.getToken(keyid=environment.keyid,
+                         secret=environment.secret,
+                         clientid=environment.clientid,
+                         appname=environment.appname,
+                         lifetime=3600)
 
 # First is to subscribe to the networks specified on the command line
 if args.netid is not None:
@@ -85,9 +85,9 @@ if args.netid is not None:
     # /api/v2/subscription.  Include the netids dictionary as a JSON
     # payload
     response=requests.post('https://%s:%s/api/v2/subscription' % 
-                         (environment.manager, environment.port),
+                         (environment.dashboard, environment.port),
                          headers={'Authorization':"Bearer %s" % token},
-                         json=netids,verify=environment.verify_mgr_cert)
+                         json=netids,verify=environment.verify_cbd_cert)
 
   except requests.exceptions.RequestException as e:
     # Generally this will be a connection error or timeout.  HTTP errors are
@@ -113,7 +113,7 @@ if args.netid is not None:
 # Now that we have created our network subscription, 
 try:
   while True:
-    url = 'https://%s:%s/api/v2/event-source' % (environment.manager,
+    url = 'https://%s:%s/api/v2/event-source' % (environment.dashboard,
                                                  environment.port)
     if args.type is not None:
       url += "?types=" + ",".join(args.type)
@@ -126,12 +126,12 @@ try:
 
     events = sseclient.SSEClient(url,
                                  headers={'Authorization':"Bearer %s" % token},
-                                 verify=environment.verify_mgr_cert)
+                                 verify=environment.verify_cbd_cert)
     try:
       for ev in events:
         event = json.loads(ev.data)
         if event['type'] == '/heart_beat':
-          print("Received heartbeat from Manager.")
+          print("Received heartbeat from Dashboard.")
         else:
           # Use the event content to generate a human readable english string
           print("Received event: ",event['english-string'].format(**event['parameters']))
@@ -140,11 +140,11 @@ try:
       print('HTTPError: {}'.format(e.response.status_code))
       if e.response.status_code == 401:
         print("JWT Expired.  Create a new one.")
-        token = finditauth.getToken(keyid=environment.keyid,
-                                    secret=environment.secret,
-                                    clientid=environment.clientid,
-                                    appname=environment.appname,
-                                    lifetime=3600)
+        token = cbdauth.getToken(keyid=environment.keyid,
+                                 secret=environment.secret,
+                                 clientid=environment.clientid,
+                                 appname=environment.appname,
+                                 lifetime=3600)
       else:
         print(vars(e.response))
     except KeyboardInterrupt:

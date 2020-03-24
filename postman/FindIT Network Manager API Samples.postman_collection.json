@@ -1,8 +1,8 @@
 {
 	"info": {
 		"_postman_id": "892efa95-c914-44b4-b81a-ae9aeb961ab8",
-		"name": "FindIT Network Manager API Samples",
-		"description": "Sample requests demonstrating the use of the Cisco FindIT Network Manager API.",
+		"name": "Cisco Business Dashboard API Samples",
+		"description": "Sample requests demonstrating the use of the Cisco Business Dashboard API.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -36,7 +36,7 @@
 							"    \"iss\": \"postman.example.com\",",
 							"    \"cid\": \"8b77a3ac-7e84-49da-923b-365d753646bb\",",
 							"    \"appver\": \"1.0\",",
-							"    \"aud\": \"findit.cisco.com\",",
+							"    \"aud\": \"business-dashboard.cisco.com\",",
 							"    \"iat\": Math.round(Date.now()/1000),",
 							"    \"exp\": Math.round(3600 + Date.now()/1000)",
 							"};",
@@ -92,10 +92,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://{{Manager Address}}/api/v2/networks",
+					"raw": "https://{{Dashboard Address}}/api/v2/networks",
 					"protocol": "https",
 					"host": [
-						"{{Manager Address}}"
+						"{{Dashboard Address}}"
 					],
 					"path": [
 						"api",
@@ -142,10 +142,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://{{Manager Address}}/api/v2/networks",
+					"raw": "https://{{Dashboard Address}}/api/v2/networks",
 					"protocol": "https",
 					"host": [
-						"{{Manager Address}}"
+						"{{Dashboard Address}}"
 					],
 					"path": [
 						"api",
@@ -192,10 +192,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://{{Manager Address}}/api/v2/networks?search=search string here&fields=name,network-id",
+					"raw": "https://{{Dashboard Address}}/api/v2/networks?search=search string here&fields=name,network-id",
 					"protocol": "https",
 					"host": [
-						"{{Manager Address}}"
+						"{{Dashboard Address}}"
 					],
 					"path": [
 						"api",
@@ -261,10 +261,10 @@
 					"raw": "{\n  \"name\":\"Insert Network Name\",\n  \"org-id\":\"{{orgid}}\",\n  \"description\":\"Insert Network Description\"\n}"
 				},
 				"url": {
-					"raw": "https://{{Manager Address}}/api/v2/networks",
+					"raw": "https://{{Dashboard Address}}/api/v2/networks",
 					"protocol": "https",
 					"host": [
-						"{{Manager Address}}"
+						"{{Dashboard Address}}"
 					],
 					"path": [
 						"api",
@@ -311,10 +311,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://{{Manager Address}}/api/v2/nodes?search-str=search string here&fields=/system-state/hostname,/system-state/type,/system-state/ip,/system-state/sn&type=Device",
+					"raw": "https://{{Dashboard Address}}/api/v2/nodes?search-str=search string here&fields=/system-state/hostname,/system-state/type,/system-state/ip,/system-state/sn&type=Device",
 					"protocol": "https",
 					"host": [
-						"{{Manager Address}}"
+						"{{Dashboard Address}}"
 					],
 					"path": [
 						"api",
@@ -375,10 +375,10 @@
 					"raw": "{\n\t\"comment\": \"Configuration backup using API call by Postman\",\n    \"node-ids\": [\n        \"{{deviceid}}\"\n    ]\n}"
 				},
 				"url": {
-					"raw": "https://{{Manager Address}}/api/v2/nodes/operations/backup-config",
+					"raw": "https://{{Dashboard Address}}/api/v2/nodes/operations/backup-config",
 					"protocol": "https",
 					"host": [
-						"{{Manager Address}}"
+						"{{Dashboard Address}}"
 					],
 					"path": [
 						"api",
@@ -424,10 +424,10 @@
 					"raw": "{\n    \"node-ids\": [\n        \"{{deviceid}}\"\n    ]\n}"
 				},
 				"url": {
-					"raw": "https://{{Manager Address}}/api/v2/nodes/operations/reboot",
+					"raw": "https://{{Dashboard Address}}/api/v2/nodes/operations/reboot",
 					"protocol": "https",
 					"host": [
-						"{{Manager Address}}"
+						"{{Dashboard Address}}"
 					],
 					"path": [
 						"api",
@@ -462,10 +462,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://{{Manager Address}}/controller/xl/{{deviceid}}?token={{jwt_token}}",
+					"raw": "https://{{Dashboard Address}}/controller/xl/{{deviceid}}?token={{jwt_token}}",
 					"protocol": "https",
 					"host": [
-						"{{Manager Address}}"
+						"{{Dashboard Address}}"
 					],
 					"path": [
 						"controller",
@@ -518,10 +518,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://{{Manager Address}}/api/v2/pnp/images",
+					"raw": "https://{{Dashboard Address}}/api/v2/pnp/images",
 					"protocol": "https",
 					"host": [
-						"{{Manager Address}}"
+						"{{Dashboard Address}}"
 					],
 					"path": [
 						"api",
@@ -569,10 +569,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://{{Manager Address}}/api/v2/pnp/configs",
+					"raw": "https://{{Dashboard Address}}/api/v2/pnp/configs",
 					"protocol": "https",
 					"host": [
-						"{{Manager Address}}"
+						"{{Dashboard Address}}"
 					],
 					"path": [
 						"api",
@@ -620,10 +620,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://{{Manager Address}}/api/v2/groups",
+					"raw": "https://{{Dashboard Address}}/api/v2/groups",
 					"protocol": "https",
 					"host": [
-						"{{Manager Address}}"
+						"{{Dashboard Address}}"
 					],
 					"path": [
 						"api",
@@ -674,10 +674,10 @@
 					"raw": "{\n  \"device-name\":\"Device_Hostname\",\n  \"node-type\":\"Allowed values: Router, Switch, WAP\",\n  \"pid\":\"Product ID - e.g. SG350-10P\",\n  \"sn\":\"Serial Number - 11 alphanumeric characters\",\n  \"group-id\":\"ID of device group\",\n  \"network-id\":\"ID of network\",\n  \"image-id\":\"ID of PnP image file.  May be blank.\",\n  \"config-id\":\"ID of PnP config file.  May be blank.\"\n}"
 				},
 				"url": {
-					"raw": "https://{{Manager Address}}/api/v2/pnp/devices",
+					"raw": "https://{{Dashboard Address}}/api/v2/pnp/devices",
 					"protocol": "https",
 					"host": [
-						"{{Manager Address}}"
+						"{{Dashboard Address}}"
 					],
 					"path": [
 						"api",

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Generate an authentication token for use with Cisco FindIT Network Manager
+"""Generate an authentication token for use with Cisco Business Dashboard
 
 When executed standalone, this utility will output a JWT suitable for use
-with the FindIT Network Manager API based on data provided through command line
+with the Cisco Business Dashboard API based on data provided through command line
 arguments.
 
 When used as a module, provides the getToken function that returns a JWT.
@@ -20,7 +20,7 @@ Command line arguments:
                           random UUID will be generated if this parameter is not
                           set.
     -n NAME, --name NAME  The name to use for the client application. Defaults
-                          to finditauth.example.com.
+                          to cbdauth.example.com.
     -v APPVER, --appver APPVER
                           The version string to use for the client application.
                           Defaults to 1.0.
@@ -51,19 +51,19 @@ import uuid
 import time
 import argparse
 
-def getToken(keyid,secret,clientid=None,appname="finditscript.example.com",appver="1.0",lifetime=3600):
+def getToken(keyid,secret,clientid=None,appname="cbdscript.example.com",appver="1.0",lifetime=3600):
   """
-  Generate a JWT suitable for use with version 2 of the Cisco FindIT Network
-  Manager API.
+  Generate a JWT suitable for use with version 2 of the Cisco Business
+  Dashboard API.
 
   Arguments:
-    keyid    - The key ID from the Access Key defined on the Manager
-    secret   - The secret value for the Access Key defined on the Manager
+    keyid    - The key ID from the Access Key defined on the Dashboard
+    secret   - The secret value for the Access Key defined on the Dashboard
     clientid - (Optional) A unique ID (UUID recommended) for the instance of
                the client application.  If not specified, a random UUID is
                generated.
     appname  - (Optional) A name to identify the application in domain name
-               format.  If not specified, the string 'finditscript.example.com'
+               format.  If not specified, the string 'cbdscript.example.com'
                is used.
     appver   - (Optional) The version of the application.  If not specified,
                the string '1.0' is used.
@@ -77,7 +77,7 @@ def getToken(keyid,secret,clientid=None,appname="finditscript.example.com",appve
     "iss":appname,
     "cid":clientid,
     "appver":appver,
-    "aud":"findit.cisco.com",
+    "aud":"business-dashboard.cisco.com",
     "iat":int(time.time()),
     "exp":int(time.time()+lifetime)
   }
@@ -88,16 +88,16 @@ def getArgs():
   # Use argparse to collect user input
   parser = argparse.ArgumentParser(description='Generate an authentication '
                                    'token for use with version 2 of the Cisco '
-                                   'FindIT Network Manager API.')
+                                   'Cisco Business Dashboard API.')
   parser.add_argument('--version', action='version', version='%(prog)s 1.0')
   parser.add_argument('keyid',help='The ID of the Access Key')
   parser.add_argument('secret',help='The secret value of the Access Key')
   parser.add_argument('-c','--clientid',default=str(uuid.uuid4()),help='The ID'
                       ' for this instance of the client application.  A random'
                       ' UUID will be generated if this parameter is not set.')
-  parser.add_argument('-n','--name',default='finditauth.example.com',
+  parser.add_argument('-n','--name',default='cbdauth.example.com',
                       help='The name to use for the client application.  '
-                      'Defaults to finditauth.example.com.')
+                      'Defaults to cbdauth.example.com.')
   parser.add_argument('-v','--appver',default='1.0',help='The version string '
                       'to use for the client application.  Defaults to 1.0.')
   parser.add_argument('-l','--lifetime',type=int,default=3600,

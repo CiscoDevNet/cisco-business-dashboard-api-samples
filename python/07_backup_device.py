@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Backup a device configuration using FindIT Network Manager.
+"""Backup a device configuration using Cisco Business Dashboard.
 
 Trigger a backup device config action for the specified device or network
-using the Cisco FindIT Network Manager API.  The device/network(s) to be
-backed up are passed as command line options.  The details of the Manager
+using the Cisco Business Dashboard API.  The device/network(s) to be
+backed up are passed as command line options.  The details of the Dashboard
 are contained in the environment.py file.
 
 Command line arguments:
@@ -40,7 +40,7 @@ import json
 import argparse
 
 import environment
-import finditauth
+import cbdauth
 
 # Get details of device(s) and/or network(s) to back up from command line
 # arguments
@@ -72,19 +72,19 @@ else:
     action['node-ids'] = args.device
 
   # Create a properly formatted JWT using environment data
-  token = finditauth.getToken(keyid=environment.keyid,
-                              secret=environment.secret,
-                              clientid=environment.clientid,
-                              appname=environment.appname)
+  token = cbdauth.getToken(keyid=environment.keyid,
+                           secret=environment.secret,
+                           clientid=environment.clientid,
+                           appname=environment.appname)
 
   try:
     # Build and send the API request.  The backup operation API path is
     # /api/v2/nodes/operations/backup-config.  Include the action details
     # dictionary as a JSON payload
     response=requests.post('https://%s:%s/api/v2/nodes/operations/backup-config' % 
-                         (environment.manager, environment.port),
+                         (environment.dashboard, environment.port),
                          headers={'Authorization':"Bearer %s" % token},
-                         json=action,verify=environment.verify_mgr_cert)
+                         json=action,verify=environment.verify_cbd_cert)
 
   except requests.exceptions.RequestException as e:
     # Generally this will be a connection error or timeout.  HTTP errors are

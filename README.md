@@ -1,12 +1,12 @@
-# FindIT Network Manager API Samples
+# Cisco Business Dashboard API Samples
 
-This project contains sample scripts demonstrating usage of the FindIT Network Manager API, using Python.
+This project contains sample scripts demonstrating usage of the Cisco Business Dashboard API, using Python.
 
-The concepts and techniques shown can be extended to enable programmatic access to allow visibility and management of Cisco 100 to 500 Series network devices through FindIT Network Manager.  The sample scripts included are simple and intended to demonstrate the capabilities and use of the API.  They should not be used for production purposes without significant modifications.
+The concepts and techniques shown can be extended to enable programmatic access to allow visibility and management of Cisco Business network devices through Cisco Business Dashboard.  The sample scripts included are simple and intended to demonstrate the capabilities and use of the API.  They should not be used for production purposes without significant modifications.
 
 Also included is a Postman collection and environment covering the requests used in the sample.
 
-These scripts require the use of FindIT Network Manager release 2.0 or higher.
+These scripts require the use of Cisco Business Dashboard release 2.2 or higher.
 
 ## Getting started
 (Verify This)
@@ -27,7 +27,7 @@ These scripts require the use of FindIT Network Manager release 2.0 or higher.
     pip install -r requirements.txt
     ```
 
-* Copy `environment.template.py` to `environment.py` and edit to specify the details of your FindIT Network Manager instance
+* Copy `environment.template.py` to `environment.py` and edit to specify the details of your Cisco Business Dashboard instance
 
 ## Usage
 
@@ -66,9 +66,9 @@ $
 
 ## Getting help
 
-More information about the FindIT Network Manager API may be found at (devnet URL) or by browsing to https://your_manager_address/api/.  You may contact Cisco Developer Support (url) for assistance with the use of the API.
+More information about the Cisco Business Dashboard API may be found at (devnet URL) or by browsing to https://your_dashboard_address/api/.  You may contact Cisco Developer Support (url) for assistance with the use of the API.
 
-If you experience any issues with the installation, configuration or operation of FindIT Network Manager or Cisco 100 to 500 series products, contact the Small Business TAC using the contacts found at https://www.cisco.com/go/sbsc.
+If you experience any issues with the installation, configuration or operation of Cisco Business Dashboard or Cisco Business products, contact the Small Business TAC using the contacts found at https://www.cisco.com/go/sbsc.
 
 If you have any questions, concerns, or bug reports associated with the sample scripts contained in this repository, please file an issue in the [Issue Tracker](./issues).
 

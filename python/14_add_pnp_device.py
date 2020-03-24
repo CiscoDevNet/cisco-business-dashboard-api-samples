@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Add a new PnP-enabled device to Cisco FindIT Network Manager.
+"""Add a new PnP-enabled device to Cisco Business Dashboard.
 
-Create a new PnP-enabled device record using the Cisco FindIT Network Manager
+Create a new PnP-enabled device record using the Cisco Business Dashboard
 API.  All parameters are specified with command linbe arguements, and the
 majority of parameters must be specified, with only the image and config file
-being optional.  The details of the Manager to update are contained in the
+being optional.  The details of the Dashboard to update are contained in the
 environment.py file.
 
 Command line arguments:
@@ -41,7 +41,7 @@ import json
 import argparse
 
 import environment
-import finditauth
+import cbdauth
 
 # Get details of network to create from command line arguments
 #
@@ -75,19 +75,19 @@ device = {
 }
 
 # Create a properly formatted JWT using environment data
-token = finditauth.getToken(keyid=environment.keyid,
-                            secret=environment.secret,
-                            clientid=environment.clientid,
-                            appname=environment.appname)
+token = cbdauth.getToken(keyid=environment.keyid,
+                         secret=environment.secret,
+                         clientid=environment.clientid,
+                         appname=environment.appname)
 
 try:
   # Build and send the API request.  The createPnpDevice API path is
   # /api/v2/pnp/devices.  Include the device details dictionary as a JSON
   # payload
   response=requests.post('https://%s:%s/api/v2/pnp/devices' % 
-                       (environment.manager, environment.port),
+                       (environment.dashboard, environment.port),
                        headers={'Authorization':"Bearer %s" % token},
-                       json=device,verify=environment.verify_mgr_cert)
+                       json=device,verify=environment.verify_cbd_cert)
 
 except requests.exceptions.RequestException as e:
   # Generally this will be a connection error or timeout.  HTTP errors are
