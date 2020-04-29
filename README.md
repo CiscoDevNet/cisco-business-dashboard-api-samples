@@ -12,13 +12,11 @@ These scripts require the use of Cisco Business Dashboard release 2.2 or higher.
 (Verify This)
 * Install Python 3:
 
-    On Windows, choose the option to add to PATH environment variable
-
 * Clone this repo:
 
     ```bash
-    git clone https://github.com/CiscoDevNet/findit-network-manager-api-samples.git
-    cd findit-network-manager-api-samples
+    git clone https://github.com/CiscoDevNet/cisco-business-dashboard-api-samples.git
+    cd cisco-business-dashboard-api-samples
     ```
 
 * Dependency Installation (you may need to use `pip3` on Linux or Mac)
