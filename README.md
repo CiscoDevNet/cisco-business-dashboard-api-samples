@@ -9,7 +9,6 @@ Also included is a Postman collection and environment covering the requests used
 These scripts require the use of Cisco Business Dashboard release 2.2 or higher.
 
 ## Getting started
-(Verify This)
 * Install Python 3:
 
 * Clone this repo:
