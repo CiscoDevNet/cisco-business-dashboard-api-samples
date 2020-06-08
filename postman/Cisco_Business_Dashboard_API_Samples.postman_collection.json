@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "892efa95-c914-44b4-b81a-ae9aeb961ab8",
+		"_postman_id": "d393f76f-4e4b-4b40-a085-d8d56c47d16d",
 		"name": "Cisco Business Dashboard API Samples",
 		"description": "Sample requests demonstrating the use of the Cisco Business Dashboard API.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -12,7 +12,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "83edd258-91eb-4954-8022-d13776d20e15",
+						"id": "ed07821e-3026-4768-b55c-b7923dae600e",
 						"exec": [
 							"// Derived from https://github.com/ktukker/adobe.io-jwt-postman",
 							"",
@@ -100,7 +100,7 @@
 					"path": [
 						"api",
 						"v2",
-						"networks"
+						"orgs"
 					]
 				},
 				"description": "Returns a JSON list of all organizations defined on the target system."
@@ -113,7 +113,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "378d9283-24c3-407b-9a21-2d26f1d640f4",
+						"id": "f87f5f09-2adb-44f2-8406-07c2e2f081b1",
 						"exec": [
 							"// Check to see if orgid is defined in the environment, and if present, add",
 							"// the x-ctx-org-id header to restrict the results to only that organization.",
@@ -163,7 +163,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "378d9283-24c3-407b-9a21-2d26f1d640f4",
+						"id": "fd256158-cbdb-458e-b49f-023259909df4",
 						"exec": [
 							"// Check to see if orgid is defined in the environment, and if present, add",
 							"// the x-ctx-org-id header to restrict the results to only that organization.",
@@ -225,7 +225,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "378d9283-24c3-407b-9a21-2d26f1d640f4",
+						"id": "639d4005-61e6-4c14-8f19-e3cf42dc81ac",
 						"exec": [
 							"// Check to see if orgid is defined in the environment, and if not, throw an error",
 							"if (pm.environment.get(\"orgid\") === \"\") {",
@@ -282,7 +282,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "378d9283-24c3-407b-9a21-2d26f1d640f4",
+						"id": "e44e8d2f-dad7-4d53-89b0-fb981e681d20",
 						"exec": [
 							"// Check to see if orgid is defined in the environment, and if present, add",
 							"// the x-ctx-org-id header to restrict the results to only that organization.",
@@ -447,7 +447,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "378d9283-24c3-407b-9a21-2d26f1d640f4",
+						"id": "b71b50f2-a38f-4bc9-a4dc-1027aa3b580f",
 						"exec": [
 							""
 						],
@@ -489,7 +489,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "378d9283-24c3-407b-9a21-2d26f1d640f4",
+						"id": "cdb1a523-6264-40ef-9b67-94cc875b451a",
 						"exec": [
 							"// Check to see if orgid is defined in the environment, and if present, add",
 							"// the x-ctx-org-id header to restrict the results to only that organization.",
@@ -540,7 +540,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "378d9283-24c3-407b-9a21-2d26f1d640f4",
+						"id": "74051e1b-5959-4753-b3f3-6ddf0469e1dc",
 						"exec": [
 							"// Check to see if orgid is defined in the environment, and if present, add",
 							"// the x-ctx-org-id header to restrict the results to only that organization.",
@@ -591,7 +591,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "378d9283-24c3-407b-9a21-2d26f1d640f4",
+						"id": "a79ac53c-92c6-45fa-a781-f01669793325",
 						"exec": [
 							"// Check to see if orgid is defined in the environment, and if present, add",
 							"// the x-ctx-org-id header to restrict the results to only that organization.",
@@ -641,7 +641,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "378d9283-24c3-407b-9a21-2d26f1d640f4",
+						"id": "567a8e7a-01f2-4b5f-b365-d192958a7dd6",
 						"exec": [
 							""
 						],
@@ -690,5 +690,6 @@
 			},
 			"response": []
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
