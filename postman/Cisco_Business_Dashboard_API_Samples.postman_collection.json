@@ -92,7 +92,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://{{Dashboard Address}}/api/v2/networks",
+					"raw": "https://{{Dashboard Address}}/api/v2/orgs",
 					"protocol": "https",
 					"host": [
 						"{{Dashboard Address}}"
