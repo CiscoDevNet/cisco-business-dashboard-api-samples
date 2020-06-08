@@ -1,6 +1,7 @@
 PyJWT
 requests
 
-# There is a bug in sseclient 0.0.23 and 0.0.24 that fails to process
-# events with large payloads.  So avoid these two versions.
-sseclient!=0.0.23,!=0.0.24
+# There is a bug in sseclient 0.0.23 and above that fails to process
+# events with large payloads.  See https://github.com/btubbs/sseclient/issues/34
+# and https://github.com/btubbs/sseclient/issues/34
+sseclient<=0.0.23
