@@ -89,9 +89,10 @@ $
 
 	To get a keyid and keysecret, log on to the GUI of the Dashboard and click on the username displayed at the bottom of the navigation bar.  On the user profile page display, click the Generate Access Key button to create a new access key id and secret.  Note that the secret is only displayed once so be sure to record it somewhere safe.  For more details on generating and managing access keys, consult the Cisco Business Dashboard administration guide found at https://cisco.com/go/cbd-docs.
 	
-* Before executing any of the other requests in the collection, make sure you execute the _Generate JWT using the RSA-Sign Crypto Library_ request.  This request uses the keyid and keysecret parameters from the environment to generate a JSON Web Token (JWT) that can be used to authenticate subsequent requests with the Dashboard.  The JWT is stored in the environment variable jwt_token.
+### Usage
+Before executing any of the other requests in the collection, make sure you execute the _Generate JWT using the RSA-Sign Crypto Library_ request.  This request uses the keyid and keysecret parameters from the environment to generate a JSON Web Token (JWT) that can be used to authenticate subsequent requests with the Dashboard.  The JWT is stored in the environment variable jwt_token.
 
-* You may then execute any of the other requests in the collection in any order.  Some requests will request query parameters to be specified, and occasionally these parameters will be id's used by Dashboard to uniquely identify networks or devices or organizations.  These identifiers may be determined using requests higher up in the collection.
+You may then execute any of the other requests in the collection in any order.  Some requests will request query parameters to be specified, and occasionally these parameters will be id's used by Dashboard to uniquely identify networks or devices or organizations.  These identifiers may be determined using requests higher up in the collection.
 
 ## Getting help
 
