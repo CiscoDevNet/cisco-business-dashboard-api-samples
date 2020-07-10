@@ -8,7 +8,7 @@ Also included is a Postman collection and environment covering the requests used
 
 These scripts require the use of Cisco Business Dashboard release 2.2 or higher.
 
-## Getting started
+## Getting started with Python
 * Install Python 3 (this is usually installed by default on Linux or Mac)
 
 * Clone this repo and then change to the directory containing the python samples:
@@ -38,7 +38,7 @@ These scripts require the use of Cisco Business Dashboard release 2.2 or higher.
 
 * Copy `environment.template.py` to `environment.py` and edit to specify the details of your Cisco Business Dashboard instance
 
-## Usage
+### Usage
 
 Each script other than environment.py may be executed by passing the script name to the python3 interpreter as follows:
 
@@ -72,6 +72,25 @@ optional arguments:
   --version   show program's version number and exit
 $
 ```
+
+## Getting started with Postman
+* Install Postman (See https://learning.postman.com/docs/getting-started/installation-and-updates/ for instructions)
+
+* Clone this repo
+
+    ```bash
+    git clone https://github.com/CiscoDevNet/cisco-business-dashboard-api-samples.git
+    ```
+
+* Import the collection and environment files located in the cisco-business-dashboard-api-samples/postman directory into Postman.  See https://learning.postman.com/docs/getting-started/importing-and-exporting-data/ for more details on this process.
+
+* Select the imported environment using the dropdown at the top right of the postman window and then click the environment quick view button next to the dropdown.  Fill out the fields for the Dashboard address, keyid and keysecret.
+
+	To get a keyid and keysecret, log on to the GUI of the Dashboard and click on the username displayed at the bottom of the navigation bar.  On the user profile page display, click the Generate Access Key button to create a new access key id and secret.  Note that the secret is only displayed once so be sure to record it somewhere safe.  For more details on generating and managing access keys, consult the Cisco Business Dashboard administration guide found at https://cisco.com/go/cbd-docs.
+	
+* Before executing any of the other requests in the collection, make sure you execute the _Generate JWT using the RSA-Sign Crypto Library_ request.  This request uses the keyid and keysecret parameters from the environment to generate a JSON Web Token (JWT) that can be used to authenticate subsequent requests with the Dashboard.  The JWT is stored in the environment variable jwt_token.
+
+* You may then execute any of the other requests in the collection in any order.  Some requests will request query parameters to be specified, and occasionally these parameters will be id's used by Dashboard to uniquely identify networks or devices or organizations.  These identifiers may be determined using requests higher up in the collection.
 
 ## Getting help
 
