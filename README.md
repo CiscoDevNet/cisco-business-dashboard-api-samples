@@ -9,13 +9,25 @@ Also included is a Postman collection and environment covering the requests used
 These scripts require the use of Cisco Business Dashboard release 2.2 or higher.
 
 ## Getting started
-* Install Python 3:
+* Install Python 3 (this is usually installed by default on Linux or Mac)
 
-* Clone this repo:
+* Clone this repo and then change to the directory containing the python samples:
 
     ```bash
     git clone https://github.com/CiscoDevNet/cisco-business-dashboard-api-samples.git
-    cd cisco-business-dashboard-api-samples
+    cd cisco-business-dashboard-api-samples/python
+    ```
+
+* Optionally setup a python virtual environment (see https://docs.python.org/3/tutorial/venv.html for more detail on virtual environments)
+
+    ```bash
+    python3 -m venv venv
+	source venv/bin/activate
+    ```
+On Windows, the command to activate the virtual environment is slightly different:
+
+	```bash
+	venv\Scripts\activate.bat
     ```
 
 * Dependency Installation (you may need to use `pip3` on Linux or Mac)
