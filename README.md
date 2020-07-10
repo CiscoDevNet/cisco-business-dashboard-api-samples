@@ -48,7 +48,7 @@ python3 01_get_organizations.py
 ```
 
 
-Several of the scripts require additional information to be passed as command line parameters, and some allow command line options to further control behaviour.  If required parameters are omitted, and error will be generated.  For example:
+Several of the scripts require additional information to be passed as command line parameters, and some allow command line options to further control behaviour.  If required parameters are omitted, an error will be generated.  For example:
 
 ```bash
 $ python3 03_get_networks_by_org.py
