@@ -24,9 +24,10 @@ These scripts require the use of Cisco Business Dashboard release 2.2 or higher.
     python3 -m venv venv
 	source venv/bin/activate
     ```
-	On Windows, the command to activate the virtual environment is slightly different:
+	On Windows, the commands to set up the virtual environment are slightly different:
 	
 	```bash
+    py.exe -m venv venv
 	venv\Scripts\activate.bat
     ```
 
