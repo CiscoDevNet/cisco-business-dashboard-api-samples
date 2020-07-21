@@ -1,8 +1,8 @@
 # Cisco Business Dashboard API Samples
 
-This project contains sample scripts demonstrating usage of the Cisco Business Dashboard API, using Python.
+This project contains sample scripts demonstrating usage of the Cisco Business Dashboard API, using Python. You use this API to get information and notifications for Cisco 100 to 500 Series routers, switches, and wireless access points. With the API you can pre-provision devices and networks as well as backup, restore, reboot, and plug-and-play (PNP) management actions.
 
-The concepts and techniques shown can be extended to enable programmatic access to allow visibility and management of Cisco Business network devices through Cisco Business Dashboard.  The sample scripts included are simple and intended to demonstrate the capabilities and use of the API.  They should not be used for production purposes without significant modifications.
+The concepts and techniques shown can be extended to enable programmatic access to allow visibility and management of Cisco Business network devices through Cisco Business Dashboard.  The sample scripts included are simple and intended to demonstrate the capabilities and use of the API. They should not be used for production purposes without significant modifications.
 
 Also included is a Postman collection and environment covering the requests used in the sample.
 
